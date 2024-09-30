@@ -15,12 +15,12 @@ namespace ProductAPI
         public Connect()
         {
             Host = "localhost";
-            Database = "Shop";
+            Database = "shop";
             User = "root";
             Password = "";
 
-            ConnectionString = "SERVER=" + Host + ";DATABASE" + Database + ";UID=" + User + ";PASSWORD=" + Password + ";SslMode=None";
-        
+            ConnectionString = "SERVER=" + Host + ";DATABASE=" + Database + ";UID=" + User + ";PASSWORD=" + Password + ";SslMode=None";
+
             Connection = new MySqlConnection(ConnectionString);
         }
     }
