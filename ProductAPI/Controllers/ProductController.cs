@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
 using ProductAPI.Model;
+using ProductAPI.Dtos;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection.Metadata.Ecma335;
+using static ProductAPI.Dtos.Dto;
 
 namespace ProductAPI.Controllers
 {
@@ -41,37 +43,41 @@ namespace ProductAPI.Controllers
                 }
             }
 
+            conn.Connection.Close();
+
             return new { response };
         }
 
         [HttpPost]
 
-        public object Post(string id, string name, int price, DateTime createdTime)
+        public ActionResult<Product> Post(CreateProductDto product)
         {
             Connect conn = new Connect();
 
             conn.Connection.Open();
 
-            try
+            string query = "INSERT INTO `products`(`Id`, `Name`, `Price`, `CreatedTime`) VALUES (@Id,@Name,@Price,@CreatedTime)";
+            Product result = new Product
             {
-                string query = "INSERT INTO products(`Id`, `Name`, `Price`, `CreatedTime`) VALUES (@id, @name, @price, @createdTime)";
+                Id = Guid.NewGuid(),
+                Name = product.Name,
+                Price = product.Price,
+                CreatedTime = DateTime.Now
+            };
 
-                MySqlCommand cmd = new MySqlCommand(query, conn.Connection);
+            MySqlCommand cmd = new MySqlCommand(query, conn.Connection);
 
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@price", price);
-                cmd.Parameters.AddWithValue("@createdTime", createdTime);
+            cmd.Parameters.AddWithValue("@Id", result.Id);
+            cmd.Parameters.AddWithValue("@Name", result.Name);
+            cmd.Parameters.AddWithValue("@Price", result.Price);
+            cmd.Parameters.AddWithValue("@CreatedTime", result.CreatedTime);
 
-                cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
 
-                return Ok( new { message = "Fasza lefutott" });
-            }
+            conn.Connection.Close();
+
+            return StatusCode(201, new { message = "Fasza lefutott" });
             
-            catch
-            {
-                return StatusCode(500, new { message = "Nem fasza, nem futott" });
-            }
         }
 
         [HttpPut]
