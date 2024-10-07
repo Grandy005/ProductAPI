@@ -91,5 +91,31 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.ProductController",
+    "Method": "GetByID",
+    "RelativePath": "Product/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ProductAPI.Model.Product",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

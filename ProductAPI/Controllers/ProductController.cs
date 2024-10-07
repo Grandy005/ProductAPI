@@ -121,5 +121,39 @@ namespace ProductAPI.Controllers
 
             return Ok(new { message =  "Sikeres törlés" });
         }
+
+        [HttpGet("{id}")]
+
+        public ActionResult<Product> GetByID(Guid id)
+        {
+            string query = $"SELECT * FROM products WHERE id = @Id";
+
+            Connect conn = new Connect();
+
+            conn.Connection.Open();
+
+            MySqlCommand cmd = new MySqlCommand(query, conn.Connection);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+
+            Product product = new Product();
+
+            using (MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {  
+                    product = new Product();
+                    product.Id = reader.GetGuid(0);
+                    product.Name = reader.GetString(1);
+                    product.Price = reader.GetInt32(2);
+                    product.CreatedTime = reader.GetDateTime(3);
+                }
+            }
+
+            conn.Connection.Close();
+
+            return Ok( product );
+        }
     }
 }
