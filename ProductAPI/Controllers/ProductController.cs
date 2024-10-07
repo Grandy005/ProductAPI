@@ -80,24 +80,46 @@ namespace ProductAPI.Controllers
             
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
 
-        public object Put()
+        public ActionResult<Product> Put(Guid id, UpdateProductDto product)
         {
             Connect conn = new Connect();
 
             conn.Connection.Open();
 
-            try
-            {
-                
-            }
-            catch
-            {
+            string query = $"UPDATE `products` SET `Name`=@Name,`Price`=@Price WHERE `Id` = @Id";
 
-            }
+            MySqlCommand cmd = new MySqlCommand(query, conn.Connection);
 
-            return 1;
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+
+            conn.Connection.Close();
+
+            return Ok (new Product { Id = id, Name = product.Name, Price = product.Price });
+        }
+
+        [HttpDelete]
+        public ActionResult<Product> Delete(Guid id)
+        {
+            string query = $"DELETE FROM products WHERE id = @Id";
+
+            Connect conn = new Connect();
+
+            conn.Connection.Open();
+
+            MySqlCommand cmd = new MySqlCommand(query, conn.Connection);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.ExecuteNonQuery();
+
+            conn.Connection.Close();
+
+            return Ok(new { message =  "Sikeres törlés" });
         }
     }
 }
