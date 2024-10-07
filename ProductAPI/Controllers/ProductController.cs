@@ -73,5 +73,25 @@ namespace ProductAPI.Controllers
                 return StatusCode(500, new { message = "Nem fasza, nem futott" });
             }
         }
+
+        [HttpPut]
+
+        public object Put()
+        {
+            Connect conn = new Connect();
+
+            conn.Connection.Open();
+
+            try
+            {
+                
+            }
+            catch
+            {
+
+            }
+
+            return 1;
+        }
     }
 }

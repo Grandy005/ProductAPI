@@ -39,5 +39,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.ProductController",
+    "Method": "Put",
+    "RelativePath": "Product",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]
